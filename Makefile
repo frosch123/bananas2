@@ -10,12 +10,12 @@
 # See the GNU General Public License for more details. You should have received a copy of the
 # GNU General Public License along with BaNaNaS2. If not, see <http://www.gnu.org/licenses/>.
 
-.PHONY: all docs
+.PHONY: all docs html_docs
 
 P3 = python3
 PU = env -u DISPLAY plantuml
 
-all:
+all: html_docs
 
 # The results of "docs" unfortunately result in modifies in the checkout, so do not do it by default
 docs: docs/tables.png
@@ -25,3 +25,11 @@ docs/tables.pu: bananas2/data/*.py gen_docs.py
 
 %.png: %.pu
 	$(PU) $^
+
+FILES_MD = $(wildcard docs/*.md)
+FILES_HTML = $(FILES_MD:%.md=%.html)
+
+html_docs: $(FILES_HTML)
+
+%.html: %.md
+	$(P3) -m markdown -x gfm $^ > $@

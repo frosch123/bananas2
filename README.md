@@ -5,3 +5,5 @@ Add-on content management system for OpenTTD
 
 * py-sqlalchemy
 * plantuml (for documentation only)
+* py-markdown
+* py-gfm (pip3 install py-gfm)
