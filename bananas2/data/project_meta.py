@@ -109,6 +109,9 @@ class ProjectReview(Base):
     @ivar edit_person: Last editing person, if not "person", i.e. a moderator.
     @type edit_person: C{int} or C{None}
 
+    @ivar language: Language of review (isocode).
+    @type language: C{str}
+
     @ivar date: Post/edit date
     @type date: C{datetime}
 
@@ -128,6 +131,7 @@ class ProjectReview(Base):
     person         = Column(Integer,     ForeignKey("persons.id"), nullable=False)
     latest         = Column(Boolean,     nullable=False)
     edit_person    = Column(Integer,     ForeignKey("persons.id"), nullable=True)
+    language       = Column(String(10),  nullable=False)
     date           = Column(DateTime,    nullable=False)
     rating         = Column(Integer,     nullable=True)
     title          = Column(String(150), nullable=True)

@@ -36,6 +36,9 @@ class VersionedFile(Base):
     @ivar file_type: Type of file
     @type file_type: C{VersionedFileType}
 
+    @ivar language: Language of file (isocode). "None" for licenses
+    @type language: C{str} or C{None}
+
     @ivar latest: Whether this is the latest version of this file.
     @type latest: C{bool}
 
@@ -58,6 +61,7 @@ class VersionedFile(Base):
     id             = Column(Integer,     primary_key=True, autoincrement=True)
     version        = Column(Integer,     ForeignKey("project_versions.id"), nullable=False)
     file_type      = Column(Integer,     nullable=False)
+    language       = Column(String(10),  nullable=True)
     latest         = Column(Boolean,     nullable=False)
     person         = Column(Integer,     ForeignKey("persons.id"), nullable=False)
     date           = Column(DateTime,    nullable=False)

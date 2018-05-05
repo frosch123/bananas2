@@ -103,7 +103,7 @@ Other information can be changed.
 | -------------------- | ----------------------------------------------------------- | ----------------------------------- | --------------- | -------------- | -------------- | ------------------ |
 | Project.type         | Project type                                                | Read (1)                            | Read            | Create         | Read           | No, invisible only |
 | Project.content_id   | Unique ID for projects with unique IDs                      | Read (1)                            | Read            | Create         | Read           | No, invisible only |
-| Project.name         | Project name                                                | Read (1)                            | Update          | Update         | Update         | No, invisible only |
+| Project.name         | Project name (single language, not translated)              | Read (1)                            | Update          | Update         | Update         | No, invisible only |
 | Project.is_banned    | Whether the project was banned from Bananas                 | Read (1)                            | Read            | Read           | Update         | No                 |
 | Project.options      | Project settings, permissions of regular users and curators | (invisible)                         | Update          | Update         | Update         | No                 |
 | ProjectMember.person | Members of a project                                        | Read (1)                            | Read            | Create, Delete | Create,Delete  | No, invisible only |
@@ -125,6 +125,7 @@ A description consists of two parts:
 There is only one description for a project, which applies to all versions of the content.
 The description is by default editable by project owner and editors. But they can also grant edit access to global curators.
 To ease the shared editing the complete history of all description editions is visible to everyone with edit permissions.
+The description only exists in one language and is not translatable, otherwise shared editing would result in a mess.
 
 | Column                     | Description                          | Annoymous/Users | Project editors/owners | Curators | Moderators/Administrators | Permanent delete   |
 | -------------------------- | ------------------------------------ | ----------------|----------------------- | -------- | ------------------------- | ------------------ |
@@ -143,6 +144,7 @@ All projects allow adding screenshots to accompany the project description.
 Screenshots can be added, hidden and deleted by project owners and editors.
 There is no versioning of screenshots, but if old screenshots are of interest to the editors/owners they can choose to only hide them, instead of permanently deleting them.
 Project editors/owners can also grant edit access to global curators.
+Screenshots can also have title and screenshot-specific description, but they are not translated.
 
 | Column                        | Description                     | Annoymous/Users | Project editors/owners | Curators   | Screenshot uploder themself | Moderators/Administrators | Permanent delete   |
 | ----------------------------- | ------------------------------- | ----------------|----------------------- | ---------- | --------------------------- | ------------------------- | ------------------ |
@@ -193,6 +195,7 @@ Examples:
 Labels are mostly created by curators, and assigned to projects by project editors/owners.
 However - to limit the mess - project editors/owners are not allowed to invent new labels, only curators can do that.
 Some categories/labels may get hard-coded into Bananas and get assigned automatically, for example mapsizes of scenarios and heightmaps, or NewGRF features.
+Labels are always English, and are not translated.
 
 | Column                        | Description                     | Annoymous/Users/Moderators | Project editors/owners | Curators               | Administrators         | Permanent delete   |
 | ----------------------------- | ------------------------------- | -------------------------- | ---------------------- | ---------------------- | ---------------------- | ------------------ |
@@ -215,6 +218,9 @@ Project editors/owners can allow regular users (not banned, not annonymous) to p
 * Reviews are longer text comments. Only one post per user and project is possible, so there are no conversation threads like on a forum.
 * Ratings are scores from 1 to 5 stars. Unless ratings are part of a review, they are only visible as an annonymous average
 
+Reviews can be posted in various languages, and viewers can filter the reviews by language.
+However, a single user can still only post one review in total (not one per language).
+
 Project editors/owners can choose to disable either "reviews" and/or "ratings without review".
 Disabling reviews/ratings later on makes existing reviews invisible, but does not delete them.
 
@@ -230,6 +236,7 @@ Ratings/reviews are weighted/sorted by age, so that reviews and ratings based on
 | ------------------------- | ---------------------------------- | ------------------------------------------------ | -------------------------------- | ------------------------- | ------------------ |
 | ProjectReview.person      | Author of review or rating         | Read latest (1)                                  | Read history, Delete, Create (1) | Update, Delete            | when banned        |
 | ProjectReview.edit_person | Moderator that edited the review   | Read latest (1)                                  | Read history, Delete, Create (1) | Update, Delete            | when banned        |
+| ProjectReview.language    | Language isocode                   | Read latest (1)                                  | Update, Delete, Create (1)       | Update, Delete            | when banned        |
 | ProjectReview.date        | Post/Edit date                     | Read latest (1)                                  | Read history, Delete, Create (1) | Update, Delete            | when banned        |
 | ProjectReview.rating      | Rating, if any                     | Read if part of review (1), read average (2)     | Update, Delete, Create (1)       | *like users*              | when banned        |
 | ProjectReview.title       | Title of review, if any            | Read latest (1)                                  | Update, Delete, Create (1)       | Update, Delete            | when banned        |
@@ -284,7 +291,8 @@ A project version is tied to one or multiple content bundles.
 Bundles are generally composed by Bananas itself. Contents are:
 
 * The actual project content.
-* Readme, Changelog, License.
+* License
+* Readme, Changelog (possibly in multiple languages)
 * Bananas meta data, if the content does not identify itself.
 
 | Column                    | Description                          | Annoymous/Users | Curators/Moderators | Project editors/owners     | Administrators | Permanent delete              |
@@ -307,9 +315,9 @@ Bundles are deleted when the project version is deleted.
 
 Project versions are accompanied by multiple text files:
 
-* License (required)
-* Readme (optional)
-* Changelog (optional)
+* License (required), always English
+* Readme (optional), multiple languages
+* Changelog (optional), multiple languages
 
 These files are part of bundles but are also accessible independently for viewing without downloading the whole bundle.
 Normally project owners/editors upload these file at the same time they upload a new version of their content.
@@ -329,7 +337,8 @@ To ease the shared editing the complete history of all licenses/readmes/changelo
 
 | Column                        | Description                          | Annoymous/Users | Curators/Moderators | Project editors/owners     | Administrators | Permanent delete              |
 | ----------------------------- | ------------------------------------ | --------------- | ------------------- | -------------------------- | -------------- | ----------------------------- |
-| VersionedFile.file_type       | License, Readme, Changelog           | Read latest (1) | Read history        | Read history, Create       | Read history   | when banned, or while DRAFT   |
+| VersionedFile.file_type       | License, Readme, Changelog           | Read any (1)    | Read any            | Read any, Create           | Read any       | when banned, or while DRAFT   |
+| VersionedFile.language        | Language isocode                     | Read any (1)    | Read any            | Read any, Create           | Read any       | when banned, or while DRAFT   |
 | VersionedFile.person          | Person uploading this file           | Read latest (1) | Read history        | Read history, Create       | Read history   | when banned, or while DRAFT   |
 | VersionedFile.date            | Upload date                          | Read latest (1) | Read history        | Read history, Create       | Read history   | when banned, or while DRAFT   |
 | VersionedFile.builtin_license | File is built-in license file        | Read latest (1) | Read history        | Read history, Create       | Read history   | when banned, or while DRAFT   |
