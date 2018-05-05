@@ -21,7 +21,7 @@ class GlobalRole(enum.IntEnum):
     """
     Global role of a Person
     """
-    ANNONYMOUS =  0  # Not logged in
+    ANONYMOUS  =  0  # Not logged in
     BANNED     =  1  # Banned user
     USER       = 10  # Regular user
     CURATOR    = 20  # Global curator

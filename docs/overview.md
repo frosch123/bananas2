@@ -78,7 +78,7 @@ Project editors can disable 8bpp-only versions, if the NewGRF only contains plac
 
 ## User roles and global curators
 
-* Banned persons: Treated like annonymous persons.
+* Banned persons: Treated like anonymous persons.
 * Regular users: Can view public stuff and comment/rate.
 * Project editors: Can edit/organise descriptions/labels for their projects, edit version availability and upload new versions.
 * Project owners: Can appoint project editors and owners in their projects.

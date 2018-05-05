@@ -33,7 +33,7 @@ Global roles:
 * Curators: People who assist projects owners with sorting/categorising content to make navigating Bananas a pleasant experience.
 * Regular users: When you join Bananas, you get this role.
 * Banned user: You get this role, when you leave Bananas.
-* Annonymous: This role is for the annonymous user, someone who did not login.
+* Anonymous: This role is for the anonymous user, someone who did not login.
 
 Project-specific roles:
 
@@ -42,7 +42,7 @@ Project-specific roles:
 
 # User accounts
 
-People can register to Bananas, if they want to do anything beyond what the annonymous user can do.
+People can register to Bananas, if they want to do anything beyond what the anonymous user can do.
 
 Bananas distinguishes "Persons" and "Accounts".
 
@@ -213,10 +213,10 @@ The assignment of labels to projects is deleted permanently when a project is ba
 
 # Reviews
 
-Project editors/owners can allow regular users (not banned, not annonymous) to post reviews and or rate their project.
+Project editors/owners can allow regular users (not banned, not anonymous) to post reviews and or rate their project.
 
 * Reviews are longer text comments. Only one post per user and project is possible, so there are no conversation threads like on a forum.
-* Ratings are scores from 1 to 5 stars. Unless ratings are part of a review, they are only visible as an annonymous average
+* Ratings are scores from 1 to 5 stars. Unless ratings are part of a review, they are only visible as an anonymous average
 
 Reviews can be posted in various languages, and viewers can filter the reviews by language.
 However, a single user can still only post one review in total (not one per language).
@@ -243,7 +243,7 @@ Ratings/reviews are weighted/sorted by age, so that reviews and ratings based on
 | ProjectReview.content     | Review text, if any                | Read latest (1)                                  | Update, Delete, Create (1)       | Update, Delete            | when banned        |
 
 (1) Reviews/ratings are always accessible to their author. Project editors/owners can disable/hide all reviews/ratings.
-(2) If users write a review, their rating is associated to the review and visible. When rating without review, the rating is annonymous (not in a technical sense).
+(2) If users write a review, their rating is associated to the review and visible. When rating without review, the rating is anonymous (not in a technical sense).
 
 Reviews and ratings are deleted permanently when either the project or the reviewing/rating user is banned.
 
