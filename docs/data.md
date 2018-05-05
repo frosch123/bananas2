@@ -58,17 +58,16 @@ Projects may be owned by multiple Persons, but Persons and Accounts are not shar
 
 This data is stored for Persons and their Accounts:
 
-| Column             | Description                                   | Annoymous/Users/Curators | User themself | Moderators | Administrators | Permanent delete   |
-| ------------------ | --------------------------------------------- | ------------------------ | ------------- | ---------- | -------------- | ------------------ |
-| Person.name        | Visible name when referencing a Person.       | Read (1)                 | Update        | Read       | Update         | No, invisible only |
-| Person.tos_version | Version of Bananas Terms-Of-Service accepted. | Invisible                | Update        | Invisible  | Read           | No, invisible only |
-| Person.role        | Global role, including "Banned user".         | Invisible                | Read          | Update (2) | Update         | No                 |
-| Account.domain     | Authentication server.                        | Invisible                | Create        | Invisible  | Read           | No                 |
-| Account.login      | Login name                                    | Invisible                | Create        | Invisible  | Read           | No                 |
-| Account.is_banned  | Whether the account is still valid.           | Invisible                | Update        | Invisible  | Update         | No                 |
+| Column             | Description                                   | Annoymous/Users/Curators | User themself | Moderators | Administrators | Permanent delete            |
+| ------------------ | --------------------------------------------- | ------------------------ | ------------- | ---------- | -------------- | --------------------------- |
+| Person.username    | Visible nick name when referencing a Person.  | Read                     | Update        | Read       | Update         | Replaced with "Banned user" |
+| Person.tos_version | Version of Bananas Terms-Of-Service accepted. | Invisible                | Update        | Invisible  | Read           | No, invisible only          |
+| Person.role        | Global role, including "Banned user".         | Invisible                | Read          | Update (1) | Update         | No                          |
+| Account.domain     | Authentication server.                        | Invisible                | Create        | Invisible  | Read           | No                          |
+| Account.login      | Login name                                    | Invisible                | Create        | Invisible  | Read           | No                          |
+| Account.is_banned  | Whether the account is still valid.           | Invisible                | Update        | Invisible  | Update         | No                          |
 
-(1) Persons who left Bananas will be displayed as "Banned user" to regular users.
-(2) Moderators can assign Curators and ban regular users. Project owners can only be banned by Administrators, since this implies banning their content.
+(1) Moderators can assign Curators and ban regular users. Project owners can only be banned by Administrators, since this implies banning their content.
 
 The listed data about Persons and Accounts is stored forever for the purpose of effectively banning people and accounts.
 After leaving Bananas none of the data is visible to regular users, but people can discover the banned users by trying to register with the same name.
@@ -211,7 +210,7 @@ The assignment of labels to projects is deleted permanently when a project is ba
 
 # Reviews
 
-Project editors/owners can allow users to post reviews and or rate their project.
+Project editors/owners can allow regular users (not banned, not annonymous) to post reviews and or rate their project.
 
 * Reviews are longer text comments. Only one post per user and project is possible, so there are no conversation threads like on a forum.
 * Ratings are scores from 1 to 5 stars. Unless ratings are part of a review, they are only visible as an annonymous average
@@ -251,26 +250,26 @@ Project editors/owners can upload new versions of their content and add it to th
     * ARCHIVED: The content is offered to all users, if they specifically search for old versions.
     * EXPERIMENTAL: The content is offered to all users, if they specifically look for experimental versions.
     * HIDDEN: The content is only available in-game when needed for a specific savegame/scenario. This is where the Bananas Promise arises.
-    * PENDING: The content just being uploaded/prepared, and is not yet offered to anyone.
-* The visibility can be switched between STABLE/ARCHIVED/EXPERIMENTAL/HIDDEN by project editors/owners at any time. Content cannot be switched back to PENDING.
-* When new content is uploaded it gets the status PENDING. This gives the authors time to adjust descriptions, readmes, changelogs, ... generally time to fix stuff which did not went as expected.
-* Content with status PENDING cannot be downloaded by anyone, and thus the Bananas Promise does not yet apply. Thus, incorrectly uploaded content can also be deleted permanently, while PENDING.
+    * DRAFT: The content just being uploaded/prepared, and is not yet offered to anyone.
+* The visibility can be switched between STABLE/ARCHIVED/EXPERIMENTAL/HIDDEN by project editors/owners at any time. Content cannot be switched back to DRAFT.
+* When new content is uploaded it gets the status DRAFT. This gives the authors time to adjust descriptions, readmes, changelogs, ... generally time to fix stuff which did not went as expected.
+* Content with status DRAFT cannot be downloaded by anyone, and thus the Bananas Promise does not yet apply. Thus, incorrectly uploaded content can also be deleted permanently, while DRAFT.
 
 | Column                    | Description                          | Annoymous/Users | Curators/Moderators | Project editors/owners     | Administrators | Permanent delete              |
 | ------------------------- | ------------------------------------ | --------------- | ------------------- | -------------------------- | -------------- | ----------------------------- |
-| ProjectVersion.name       | Human-readable version name          | Read (3)        | Read                | Create, Update, Delete (5) | Update, Delete | when banned, or while PENDING |
-| ProjectVersion.version_id | Machine-readable version number (1)  | Read (3)        | Read                | Read, Delete (5)           | Read, Delete   | when banned, or while PENDING |
-| ProjectVersion.md5sum     | Checksum to identify the version (2) | Read (3)        | Read (3)            | Read, Delete (5)           | Read, Delete   | when banned, or while PENDING |
-| ProjectVersion.date       | Creation date                        | Read (3)        | Read                | Read, Delete (5)           | Read, Delete   | when banned, or while PENDING |
-| ProjectVersion.visibility | Visibility (see above)               | Read (3)        | Read, Update (4)    | Create, Update, Delete (5) | Update, Delete | when banned, or while PENDING |
+| ProjectVersion.name       | Human-readable version name          | Read (3)        | Read                | Create, Update, Delete (5) | Update, Delete | when banned, or while DRAFT   |
+| ProjectVersion.version_id | Machine-readable version number (1)  | Read (3)        | Read                | Read, Delete (5)           | Read, Delete   | when banned, or while DRAFT   |
+| ProjectVersion.md5sum     | Checksum to identify the version (2) | Read (3)        | Read (3)            | Read, Delete (5)           | Read, Delete   | when banned, or while DRAFT   |
+| ProjectVersion.date       | Creation date                        | Read (3)        | Read                | Read, Delete (5)           | Read, Delete   | when banned, or while DRAFT   |
+| ProjectVersion.visibility | Visibility (see above)               | Read (3)        | Read, Update (4)    | Create, Update, Delete (5) | Update, Delete | when banned, or while DRAFT   |
 
 (1) The version-id is assigned automatically. For BaseSets, NewGRF and scripts it is defined by the content itself, for other project types Bananas assigns one.
 (2) Assigned automatically, not all project types have this.
 (3) Limited by the visibility setting. Curators/moderators can see the existence of HIDDEN versions, but they cannot download them.
 (4) Curators and Moderators can downgrade visibility to EXPERIMENTAL or HIDDEN. They cannot upgrade it.
-(5) Deleting is only available while still in PENDING state. Afterwards the Bananas Promise applies.
+(5) Deleting is only available while still in DRAFT state. Afterwards the Bananas Promise applies.
 
-Project versions can be deleting while still PENDING. Afterwards they are deleted permanently only when the project is banned.
+Project versions can be deleting while still DRAFT. Afterwards they are deleted permanently only when the project is banned.
 
 # Bundles
 
@@ -290,14 +289,14 @@ Bundles are generally composed by Bananas itself. Contents are:
 
 | Column                    | Description                          | Annoymous/Users | Curators/Moderators | Project editors/owners     | Administrators | Permanent delete              |
 | ------------------------- | ------------------------------------ | --------------- | ------------------- | -------------------------- | -------------- | ----------------------------- |
-| Bundle.bundle_type        | Bundle type, if there are multiple   | Read (2)        | Read                | Read                       | Read           | when banned, or while PENDING |
-| Bundle.person             | Person uploading the project content | Read (2)        | Read                | Read                       | Read           | when banned, or while PENDING |
-| Bundle.date               | Original upload date                 | Read (2)        | Read                | Read                       | Read           | when banned, or while PENDING |
-| Bundle.package_date       | Date of last repackaging             | Read (2)        | Read                | Read                       | Read           | when banned, or while PENDING |
-| Bundle.file_id            | Packaged file                        | Read (2)        | Read (2)            | Read                       | Read           | when banned, or while PENDING |
-| Bundle.checksum_md5       | Checksum for the whole bundle (1)    | Read (2)        | Read                | Read                       | Read           | when banned, or while PENDING |
-| Bundle.checksum_sha1      | Checksum for the whole bundle        | Read (2)        | Read                | Read                       | Read           | when banned, or while PENDING |
-| Bundle.checksum_sha256    | Checksum for the whole bundle        | Read (2)        | Read                | Read                       | Read           | when banned, or while PENDING |
+| Bundle.bundle_type        | Bundle type, if there are multiple   | Read (2)        | Read                | Read                       | Read           | when banned, or while DRAFT   |
+| Bundle.person             | Person uploading the project content | Read (2)        | Read                | Read                       | Read           | when banned, or while DRAFT   |
+| Bundle.date               | Original upload date                 | Read (2)        | Read                | Read                       | Read           | when banned, or while DRAFT   |
+| Bundle.package_date       | Date of last repackaging             | Read (2)        | Read                | Read                       | Read           | when banned, or while DRAFT   |
+| Bundle.file_id            | Packaged file                        | Read (2)        | Read (2)            | Read                       | Read           | when banned, or while DRAFT   |
+| Bundle.checksum_md5       | Checksum for the whole bundle (1)    | Read (2)        | Read                | Read                       | Read           | when banned, or while DRAFT   |
+| Bundle.checksum_sha1      | Checksum for the whole bundle        | Read (2)        | Read                | Read                       | Read           | when banned, or while DRAFT   |
+| Bundle.checksum_sha256    | Checksum for the whole bundle        | Read (2)        | Read                | Read                       | Read           | when banned, or while DRAFT   |
 
 (1) This checksum is different from ProjectVersion.md5sum since it includes all files and meta data. This checksum may change when repackaging.
 (2) Limited by the project version visibility setting.
@@ -330,11 +329,11 @@ To ease the shared editing the complete history of all licenses/readmes/changelo
 
 | Column                        | Description                          | Annoymous/Users | Curators/Moderators | Project editors/owners     | Administrators | Permanent delete              |
 | ----------------------------- | ------------------------------------ | --------------- | ------------------- | -------------------------- | -------------- | ----------------------------- |
-| VersionedFile.file_type       | License, Readme, Changelog           | Read latest (1) | Read history        | Read history, Create       | Read history   | when banned, or while PENDING |
-| VersionedFile.person          | Person uploading this file           | Read latest (1) | Read history        | Read history, Create       | Read history   | when banned, or while PENDING |
-| VersionedFile.date            | Upload date                          | Read latest (1) | Read history        | Read history, Create       | Read history   | when banned, or while PENDING |
-| VersionedFile.builtin_license | File is built-in license file        | Read latest (1) | Read history        | Read history, Create       | Read history   | when banned, or while PENDING |
-| VersionedFile.file_id         | File, if not built-in                | Read latest (1) | Read history        | Read history, Create       | Read history   | when banned, or while PENDING |
+| VersionedFile.file_type       | License, Readme, Changelog           | Read latest (1) | Read history        | Read history, Create       | Read history   | when banned, or while DRAFT   |
+| VersionedFile.person          | Person uploading this file           | Read latest (1) | Read history        | Read history, Create       | Read history   | when banned, or while DRAFT   |
+| VersionedFile.date            | Upload date                          | Read latest (1) | Read history        | Read history, Create       | Read history   | when banned, or while DRAFT   |
+| VersionedFile.builtin_license | File is built-in license file        | Read latest (1) | Read history        | Read history, Create       | Read history   | when banned, or while DRAFT   |
+| VersionedFile.file_id         | File, if not built-in                | Read latest (1) | Read history        | Read history, Create       | Read history   | when banned, or while DRAFT   |
 
 (1) Limited by the project version visibility setting.
 
@@ -372,14 +371,14 @@ Some content requires other content to run.
 For scenarios and NewGRF presets Bananas will determine content dependencies automatically.
 For scripts it will try its best, but there are certainly ways to obfuscate dependencies here; so administrators may mess with this.
 
-If not all dependencies are available on Bananas, then the content cannot leave the PENDING state.
+If not all dependencies are available on Bananas, then the content cannot leave the DRAFT state.
 
 | Column                            | Description                                            | Annoymous/Users | Curators/Moderators | Project editors/owners | Administrators         | Permanent delete              |
 | --------------------------------- | ------------------------------------------------------ | --------------- | ------------------- | ---------------------- | ---------------------- | ----------------------------- |
-| ContentDependency.req_project     | Required project                                       | Read (1)        | Read                | Read                   | Create, Update, Delete | when banned, or while PENDING |
-| ContentDependency.req_version     | Whether a single specific version is required (md5sum) | Read (1)        | Read                | Read                   | Create, Update, Delete | when banned, or while PENDING |
-| ContentDependency.req_version_min | Minimum compatible version, if any                     | Read (1)        | Read                | Read                   | Create, Update, Delete | when banned, or while PENDING |
-| ContentDependency.req_version_max | Maximum compatible version, if any                     | Read (1)        | Read                | Read                   | Create, Update, Delete | when banned, or while PENDING |
+| ContentDependency.req_project     | Required project                                       | Read (1)        | Read                | Read                   | Create, Update, Delete | when banned, or while DRAFT   |
+| ContentDependency.req_version     | Whether a single specific version is required (md5sum) | Read (1)        | Read                | Read                   | Create, Update, Delete | when banned, or while DRAFT   |
+| ContentDependency.req_version_min | Minimum compatible version, if any                     | Read (1)        | Read                | Read                   | Create, Update, Delete | when banned, or while DRAFT   |
+| ContentDependency.req_version_max | Maximum compatible version, if any                     | Read (1)        | Read                | Read                   | Create, Update, Delete | when banned, or while DRAFT   |
 
 (1) Limited by the project version visibility setting.
 

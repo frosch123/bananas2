@@ -35,8 +35,8 @@ class Person(Base):
     @ivar id: Unique id, never to be changed.
     @type id: C{int}
 
-    @ivar name: Displayed name
-    @type name: C{str} or C{None}
+    @ivar username: Displayed nickname
+    @type username: C{str} or C{None}
 
     @ivar tos_version: Version of Terms-Of-Service accepted.
     @type tos_version: C{str}
@@ -47,7 +47,7 @@ class Person(Base):
 
     __tablename__  = "persons"
     id             = Column(Integer,     primary_key=True, autoincrement=True)
-    name           = Column(String(150), nullable=False, unique=True)
+    username       = Column(String(150), nullable=False, unique=True)
     tos_version    = Column(String(30),  nullable=False)
     role           = Column(Integer,     nullable=False)
 

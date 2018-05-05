@@ -18,7 +18,7 @@ from .tables import Base
 
 @enum.unique
 class VersionVisibility(enum.IntEnum):
-    PENDING      =  1 # Version is being uploaded/prepared
+    DRAFT        =  1 # Version is being uploaded/prepared
     HIDDEN       =  2 # Version is hidden from new users
     EXPERIMENTAL = 10 # Experimental version for brave souls
     ARCHIVED     = 20 # Archived versions for old souls
