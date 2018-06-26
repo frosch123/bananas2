@@ -14,8 +14,12 @@
 
 P3 = python3
 PU = env -u DISPLAY plantuml
+WGET = wget
 
-all: html_docs
+
+
+all: html_docs lang_defs
+.PHONY: all lang_defs
 
 # The results of "docs" unfortunately result in modifies in the checkout, so do not do it by default
 docs: docs/tables.png
@@ -33,3 +37,6 @@ html_docs: $(FILES_HTML)
 
 %.html: %.md
 	$(P3) -m markdown -x gfm $^ > $@
+
+lang_defs:
+	$(WGET) -O bananas2/data/languages.csv http://translator.openttd.org/language-list
