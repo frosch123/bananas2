@@ -285,7 +285,7 @@ A project version is tied to one or multiple content bundles.
 * Most project types have a single content bundle that contains the data to play with the version of the project.
 * Most project types also offer to upload a separate source bundle, for example if the project is open source and the source bundle differs from the content bundle.
 * Some project types allow multiple bundles for the same project version:
-    * Base Graphics, NewGRF: When the content provides 32bpp oder 4x zoom graphics, Bananans optionally also offers to provide stripped 8bpp and/or 1x zoom bundles.
+    * Base Graphics, NewGRF: When the content provides 32bpp or 4x zoom graphics, Bananans optionally also offers to provide stripped 8bpp and/or 1x zoom bundles.
     * OpenTTD bundles: There are separate bundles for the various platforms.
 
 Bundles are generally composed by Bananas itself. Contents are:
